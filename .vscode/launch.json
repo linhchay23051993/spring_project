@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-JobhunterApplication<jobhunter>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}/jobhunter",
+            "mainClass": "vn.hoidanit.jobhunter.JobhunterApplication",
+            "projectName": "jobhunter",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env",
+            "vmArgs": "",
+            "console": "internalConsole",
+            "internalConsoleOptions": "openOnSessionStart"
+        }
+    ]
+}

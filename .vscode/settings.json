@@ -1,0 +1,22 @@
+{
+    "java.compile.nullAnalysis.mode": "automatic",
+    "java.debug.settings.onBuildFailureProceed": true,
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.import.gradle.enabled": true,
+    "java.import.gradle.wrapper.enabled": true,
+    "java.import.gradle.java.home": "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-17",
+            "path": "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home",
+            "default": true
+        }
+    ],
+    "java.project.resourceFilters": [
+        "node_modules",
+        ".git"
+    ],
+    "spring-boot.ls.java.home": "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home",
+    "spring.initializr.defaultLanguage": "Java",
+    "spring-boot.ls.checkJVM": false
+}
