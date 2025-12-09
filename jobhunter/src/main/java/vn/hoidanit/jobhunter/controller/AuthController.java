@@ -26,7 +26,6 @@ import vn.hoidanit.jobhunter.util.SecurityUtil;
 import vn.hoidanit.jobhunter.util.anotation.ApiMessage;
 
 @RestController
-@RequestMapping("/api/v1")
 public class AuthController {
 
 	private final AuthenticationManagerBuilder authenticationManagerBuilder;

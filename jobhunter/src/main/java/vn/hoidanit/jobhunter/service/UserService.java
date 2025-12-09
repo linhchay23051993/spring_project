@@ -52,6 +52,7 @@ public class UserService {
 		mt.setTotal(pageUser.getTotalElements());
 
 		rs.setMeta(mt);
+		rs.setResult(pageUser);
 
 		return rs;
 	}

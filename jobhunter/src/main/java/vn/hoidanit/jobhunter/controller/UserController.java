@@ -27,7 +27,6 @@ import vn.hoidanit.jobhunter.service.error.IdInvalidException;
 import vn.hoidanit.jobhunter.util.anotation.ApiMessage;
 
 @RestController
-@RequestMapping("/api/v1")
 public class UserController {
 
 	private final UserService userService;

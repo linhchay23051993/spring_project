@@ -18,5 +18,13 @@
     ],
     "spring-boot.ls.java.home": "/Library/Java/JavaVirtualMachines/jdk-17.jdk/Contents/Home",
     "spring.initializr.defaultLanguage": "Java",
-    "spring-boot.ls.checkJVM": false
+    "spring-boot.ls.checkJVM": false,
+    "editor.inlineSuggest.enabled": true,
+    "editor.inlineSuggest.syntaxHighlightingEnabled": true,
+    "editor.suggest.showInlineDetails": false,
+    "editor.suggestOnTriggerCharacters": true,
+    "terminal.integrated.suggest.suggestOnTriggerCharacters": true,
+    "editor.suggest.selectionMode": "always",
+    "editor.inlineSuggest.suppressSuggestions": true,
+    "emmet.useInlineCompletions": true
 }

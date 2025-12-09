@@ -15,7 +15,6 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import vn.hoidanit.jobhunter.domain.response.RestResponse;
 
-//
 @RestControllerAdvice
 public class GlobalException {
 	@ExceptionHandler(value = IdInvalidException.class)
