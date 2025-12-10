@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.validation.Valid;
@@ -80,7 +79,7 @@ public class AuthController {
 		ResLoginDto.UserGetAccount userGetAccount = new ResLoginDto.UserGetAccount();
 		userLogin.setId(currentUser.getId());
 		userLogin.setEmail(currentUser.getEmail());
-		userLogin.setUserName(currentUser.getName());
+		userLogin.setUsername(currentUser.getName());
 		userGetAccount.setUser(userLogin);
 
 		return ResponseEntity.ok(userGetAccount);
