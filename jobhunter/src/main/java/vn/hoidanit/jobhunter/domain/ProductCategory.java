@@ -1,11 +1,13 @@
 package vn.hoidanit.jobhunter.domain;
 
 import java.time.Instant;
+import java.util.List;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -26,6 +28,9 @@ public class ProductCategory {
 	private Instant createdAt;
 	private String createBy;
 	private String updatedBy;
+	
+	@OneToMany(mappedBy = "productCategory")
+	private List<Products> products;
 
 	@PrePersist
 	public void handleBeforeCreate() {

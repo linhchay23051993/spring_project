@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -32,6 +34,11 @@ public class Products {
 	private Instant createdAt;
 	private String createBy;
 	private String updatedBy;
+	private long categoryId;
+	
+	@ManyToOne
+	@JoinColumn(name = "product_category_id")
+	private ProductCategory productCategory;
 
 	@PrePersist
 	public void handleBeforeCreate() {
