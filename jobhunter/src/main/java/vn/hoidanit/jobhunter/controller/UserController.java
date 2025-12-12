@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.turkraft.springfilter.boot.Filter;
@@ -19,7 +18,6 @@ import com.turkraft.springfilter.boot.Filter;
 import jakarta.validation.Valid;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDto;
-import vn.hoidanit.jobhunter.domain.response.ResUserDto;
 import vn.hoidanit.jobhunter.domain.response.ResCreateUserDto;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
 import vn.hoidanit.jobhunter.service.UserService;
@@ -67,13 +65,12 @@ public class UserController {
 
 	@GetMapping("/users/{id}")
 	@ApiMessage("Fetch all  by id")
-	public ResponseEntity<ResUserDto> getUserById(@PathVariable("id") long id) throws IdInvalidException {
+	public ResponseEntity<User> getUserById(@PathVariable("id") long id) throws IdInvalidException {
 		User currentUser = this.userService.fetchUserById(id);
 		if (currentUser == null) {
 			throw new IdInvalidException("User voi id = " + id + " khong ton tai");
 		}
-		User fetchUser = this.userService.fetchUserById(id);
-		return ResponseEntity.status(HttpStatus.OK).body(this.userService.convertToResUserDto(fetchUser));
+		return ResponseEntity.status(HttpStatus.OK).body(this.userService.fetchUserById(id));
 	}
 
 	@GetMapping("/users")

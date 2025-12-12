@@ -30,10 +30,16 @@ public class UserService {
 
 	public User handleCreateUser(User user) {
 		List<Roles> list = new ArrayList<>();
-		Roles roles = this.roleRepository.findById((long) 1).get();
-		if (roles != null) {
+		if (user.getRoleId().isEmpty()) {
+			Roles roles = this.roleRepository.findById((long) 1).get();
 			list.add(roles);
+		} else {
+			for (Long id : user.getRoleId()) {
+				Roles roles = this.roleRepository.findById(id).get();
+				list.add(roles);
+			}
 		}
+
 		user.setListRole(list);
 		return this.userRepository.save(user);
 	}

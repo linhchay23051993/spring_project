@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -28,6 +29,8 @@ import org.springframework.stereotype.Service;
 
 import com.nimbusds.jose.util.Base64;
 
+import vn.hoidanit.jobhunter.domain.Roles;
+import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.response.ResLoginDto;
 
 @Service
@@ -49,14 +52,17 @@ public class SecurityUtil {
         this.encoder = encoder;
     }
 
-    public String createAccessToken(String email, ResLoginDto.UserLogin dto) {
+    public String createAccessToken(String email, ResLoginDto.UserLogin dto, User currentUser) {
 
         Instant now = Instant.now();
         Instant validity = now.plus(accessTokenExpiration, ChronoUnit.SECONDS);
-        
+
         // Lấy permissions từ user
-        List<String> listAuthority = new ArrayList<>();
-        listAuthority.add("ROLE_USER");
+        List<Roles> roles = currentUser.getListRole();
+        List<String> authorities = new ArrayList<>();
+        for (Roles role : roles) {
+            authorities.add("ROLE_" + role.getName().toUpperCase());
+        }
 
         // @formatter:off
         JwtClaimsSet claims = JwtClaimsSet.builder()
@@ -64,7 +70,7 @@ public class SecurityUtil {
             .expiresAt(validity)
             .subject(email)
             .claim("user", dto)
-            .claim("permissions", listAuthority)
+            .claim("permissions", authorities)
             .build();
 
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();
