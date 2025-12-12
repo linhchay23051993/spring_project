@@ -27,7 +27,6 @@ public class ProductCategoryController {
 	public ResponseEntity<ProductCategory> createProductCategory(@RequestBody ProductCategory category) {
 		return ResponseEntity.ok(productCategoryService.createProductCategory(category));
 	}
-
 	
 	@PreAuthorize("hasAnyRole('ADMIN', 'USER')")
 	@GetMapping("/product-category")
