@@ -12,6 +12,7 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
@@ -34,6 +35,7 @@ public class Products {
 	private Instant createdAt;
 	private String createBy;
 	private String updatedBy;
+	@Transient
 	private long categoryId;
 	
 	@ManyToOne

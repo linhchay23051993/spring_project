@@ -4,19 +4,25 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import vn.hoidanit.jobhunter.domain.ProductCategory;
 import vn.hoidanit.jobhunter.domain.Products;
+import vn.hoidanit.jobhunter.repository.ProductCategoryRepository;
 import vn.hoidanit.jobhunter.repository.ProductRepository;
 
 @Service
 public class ProductService {
 
 	private ProductRepository productRepository;
+	private ProductCategoryRepository categoryRepository;
 
-	public ProductService(ProductRepository productRepository) {
+	public ProductService(ProductRepository productRepository, ProductCategoryRepository categoryRepository) {
 		this.productRepository = productRepository;
+		this.categoryRepository = categoryRepository;
 	}
 
 	public Products createProduct(Products products) {
+		ProductCategory category = this.categoryRepository.findById(products.getCategoryId()).get();
+		products.setProductCategory(category);
 		return this.productRepository.save(products);
 	}
 
