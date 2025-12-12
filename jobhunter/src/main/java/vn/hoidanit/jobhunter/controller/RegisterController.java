@@ -20,7 +20,7 @@ public class RegisterController {
 		this.passwordEncoder = passwordEncoder;
 	}
 
-	@PostMapping("/register")
+	@PostMapping("/auth/register")
 	public ResponseEntity<String> register(@RequestBody User userRequest) throws IdInvalidException {
 		boolean isEmailExist = userService.isEmailExist(userRequest.getEmail());
 		if (isEmailExist) {

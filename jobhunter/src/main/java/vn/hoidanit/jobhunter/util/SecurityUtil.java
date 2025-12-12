@@ -53,10 +53,10 @@ public class SecurityUtil {
 
         Instant now = Instant.now();
         Instant validity = now.plus(accessTokenExpiration, ChronoUnit.SECONDS);
-        // hardcode permission for testing
+        
+        // Lấy permissions từ user
         List<String> listAuthority = new ArrayList<>();
-        listAuthority.add("ROLE_USER_CREATE");
-        listAuthority.add("ROLE_USER_UPDATE");
+        listAuthority.add("ROLE_USER");
 
         // @formatter:off
         JwtClaimsSet claims = JwtClaimsSet.builder()
@@ -64,7 +64,7 @@ public class SecurityUtil {
             .expiresAt(validity)
             .subject(email)
             .claim("user", dto)
-            .claim("permission", listAuthority)
+            .claim("permissions", listAuthority)
             .build();
 
         JwsHeader jwsHeader = JwsHeader.with(JWT_ALGORITHM).build();

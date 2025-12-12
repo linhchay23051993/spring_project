@@ -1,5 +1,7 @@
 package vn.hoidanit.jobhunter.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -7,23 +9,32 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import vn.hoidanit.jobhunter.domain.Roles;
 import vn.hoidanit.jobhunter.domain.User;
 import vn.hoidanit.jobhunter.domain.response.ResCreateUserDto;
 import vn.hoidanit.jobhunter.domain.response.ResUpdateUserDto;
 import vn.hoidanit.jobhunter.domain.response.ResUserDto;
 import vn.hoidanit.jobhunter.domain.response.ResultPaginationDTO;
+import vn.hoidanit.jobhunter.repository.RoleRepository;
 import vn.hoidanit.jobhunter.repository.UserRepository;
 
 @Service
 public class UserService {
 	private final UserRepository userRepository;
+	private RoleRepository roleRepository;
 
-
-	public UserService(UserRepository userRepository) {
+	public UserService(UserRepository userRepository, RoleRepository roleRepository) {
 		this.userRepository = userRepository;
+		this.roleRepository = roleRepository;
 	}
 
 	public User handleCreateUser(User user) {
+		List<Roles> list = new ArrayList<>();
+		Roles roles = this.roleRepository.findById((long) 1).get();
+		if (roles != null) {
+			list.add(roles);
+		}
+		user.setListRole(list);
 		return this.userRepository.save(user);
 	}
 
