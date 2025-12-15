@@ -3,6 +3,8 @@ package vn.hoidanit.jobhunter.domain;
 import java.time.Instant;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -41,6 +43,7 @@ public class Products {
 	private long categoryId;
 	
 	@OneToMany(mappedBy = "product")
+	@JsonIgnore
 	private List<CartItem> cartsItems;
 	
 	@ManyToOne
