@@ -16,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -56,9 +57,9 @@ public class User {
 	@Transient
 	private List<Long> roleId;
 
-	@OneToMany(mappedBy = "user")
+	@OneToOne(mappedBy = "user")
 	@JsonIgnore
-	private List<Cart> carts;
+	private Cart cart;
 
 	@PrePersist
 	public void handleBeforeCreate() {

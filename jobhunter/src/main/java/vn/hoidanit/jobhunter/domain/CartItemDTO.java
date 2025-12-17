@@ -8,6 +8,4 @@ import lombok.Setter;
 public class CartItemDTO {
 	private long productId;
     private int quantity;
-    private int price;
-    private int totalPrice;
 }

@@ -2,6 +2,7 @@ package vn.hoidanit.jobhunter.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -18,7 +19,12 @@ public class CartController {
 	@PostMapping("/cart")
 	public ResponseEntity<String> createCart(@RequestBody CartRequestDTO dto){
 		this.cartService.createCart(dto);
-		
-		return ResponseEntity.ok("OK");
+		return ResponseEntity.ok("Create OK");
+	}
+	
+	@PutMapping("/cart")
+	public ResponseEntity<String> updateCart(@RequestBody CartRequestDTO dto){
+		this.cartService.updateCart(dto);
+		return ResponseEntity.ok("Update OK");
 	}
 }
