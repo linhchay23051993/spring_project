@@ -6,6 +6,7 @@ import javax.crypto.spec.SecretKeySpec;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -43,6 +44,25 @@ public class SecurityConfiguration {
 		.cors(Customizer.withDefaults())
 				.authorizeHttpRequests(
 						authz -> authz.requestMatchers("/", "/auth/login","/auth/refresh","/auth/register").permitAll()
+						// User Controller
+						.requestMatchers(HttpMethod.POST,"/users**").hasAuthority("ROLE_ADMIN")
+						.requestMatchers(HttpMethod.GET,"/users**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+						.requestMatchers(HttpMethod.PUT,"/users**").hasAuthority("ROLE_ADMIN")
+						.requestMatchers(HttpMethod.DELETE,"/users**").hasAuthority("ROLE_ADMIN")
+						// Product Controller
+						.requestMatchers(HttpMethod.POST,"/product/**").hasAuthority("ROLE_ADMIN")
+						.requestMatchers(HttpMethod.PUT,"/product**").hasAuthority("ROLE_ADMIN")
+						.requestMatchers(HttpMethod.DELETE,"/product**").hasAuthority("ROLE_ADMIN")
+						// Cart Controller
+						.requestMatchers(HttpMethod.POST,"/cart**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+						.requestMatchers(HttpMethod.GET,"/cart**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+						.requestMatchers(HttpMethod.PUT,"/cart**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+						.requestMatchers(HttpMethod.DELETE,"/cart**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+						// Order controller
+						.requestMatchers(HttpMethod.POST,"/order**").hasAuthority("ROLE_ADMIN")
+//						.requestMatchers(HttpMethod.GET,"/users**").hasAuthority("ROLE_ADMIN")
+//						.requestMatchers(HttpMethod.PUT,"/users**").hasAuthority("ROLE_ADMIN")
+//						.requestMatchers(HttpMethod.DELETE,"/users**").hasAuthority("ROLE_ADMIN")
 						.anyRequest().authenticated()
 						)
 				.oauth2ResourceServer(
