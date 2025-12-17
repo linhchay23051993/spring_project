@@ -12,16 +12,16 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "CartItem")
+@Table(name = "OrderItem")
 @Getter
 @Setter
-public class CartItem {
+public class OrderItem {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
 	@ManyToOne
-	private Products product;
+	private Products productOder;
 
 	private int quantity;
 	private int price;
@@ -29,5 +29,5 @@ public class CartItem {
 
 	@ManyToOne
 	@JsonIgnore
-	Cart cart;
+	Order order;
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import vn.hoidanit.jobhunter.domain.Cart;
 import vn.hoidanit.jobhunter.domain.CartItem;
@@ -15,6 +16,7 @@ import vn.hoidanit.jobhunter.repository.CartItemRepository;
 import vn.hoidanit.jobhunter.repository.CartRepository;
 import vn.hoidanit.jobhunter.repository.ProductRepository;
 import vn.hoidanit.jobhunter.repository.UserRepository;
+import vn.hoidanit.jobhunter.service.error.OverQuanlityException;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 
 @Service
@@ -53,7 +55,7 @@ public class CartService {
 		cartRepository.save(cart);
 	}
 
-	public void updateCart(CartRequestDTO dto) {
+	public void updateCart(CartRequestDTO dto) throws OverQuanlityException {
 		String email = SecurityUtil.getCurrentUserLogin().get();
 		User user = userRepository.findByEmail(email);
 		Cart cart = cartRepository.findByUserId(user.getId());
@@ -63,7 +65,11 @@ public class CartService {
 			if (cartItem != null) {
 				Products product = productRepository.findById(item.getProductId()).get();
 				cartItem.setProduct(product);
-				cartItem.setQuantity(item.getQuantity());
+				if (item.getQuantity() > product.getQuantity()) {
+					throw new OverQuanlityException("HANG KHONG CON DU SO LUONG");
+				} else {
+					cartItem.setQuantity(item.getQuantity());
+				}
 				cartItem.setPrice(product.getPrice());
 				cartItem.setTotalPrice(product.getPrice() * item.getQuantity());
 				cartItem.setCart(cart);
@@ -84,4 +90,35 @@ public class CartService {
 
 		}
 	}
+	@Transactional
+	public Cart getCart() {
+		String email = SecurityUtil.getCurrentUserLogin().get();
+		User user = userRepository.findByEmail(email);
+		Cart cart = cartRepository.findByUserId(user.getId());
+		List<CartItem> cartItems = cart.getItems();
+		for (CartItem item : cartItems) {
+			Products product = productRepository.findById(item.getProduct().getId()).get();
+			if(item.getPrice() != product.getPrice()) {
+				item.setPrice(product.getPrice());
+				item.setTotalPrice(product.getPrice()* item.getQuantity());
+			}
+		}
+		cart.setItems(cartItems);
+		cartRepository.save(cart);
+		return cartRepository.findByUserId(user.getId());
+	}
+
+	@Transactional
+	public void deleteCartItem(long productId) {
+		String email = SecurityUtil.getCurrentUserLogin().get();
+		User user = userRepository.findByEmail(email);
+		Cart cart = cartRepository.findByUserId(user.getId());
+		this.cartItemRepository.deleteByCartIdAndProductId(cart.getId(), productId);
+	}
+	
+	@Transactional
+	public void deleteCart(long cartId) {
+		this.cartRepository.deleteById(cartId);
+	}
+	
 }

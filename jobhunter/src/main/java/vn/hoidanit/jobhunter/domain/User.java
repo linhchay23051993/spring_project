@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -60,6 +61,9 @@ public class User {
 	@OneToOne(mappedBy = "user")
 	@JsonIgnore
 	private Cart cart;
+	
+	@OneToMany(mappedBy = "userOrder", cascade = CascadeType.ALL)
+	private List<Order> items;
 
 	@PrePersist
 	public void handleBeforeCreate() {

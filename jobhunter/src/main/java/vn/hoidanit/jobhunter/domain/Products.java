@@ -46,6 +46,10 @@ public class Products {
 	@JsonIgnore
 	private List<CartItem> cartsItems;
 	
+	@OneToMany(mappedBy = "productOder")
+	@JsonIgnore
+	private List<OrderItem> ordersItems;
+	
 	@ManyToOne
 	@JoinColumn(name = "product_category_id")
 	private ProductCategory productCategory;

@@ -58,5 +58,13 @@ public class GlobalException {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
 
 	}
+	@ExceptionHandler(value = { OverQuanlityException.class })
+	public ResponseEntity<RestResponse<Object>> overQuanlityException(Exception ex) {
+		RestResponse<Object> res = new RestResponse<>();
+		res.setStatusCode(HttpStatus.LOCKED.value());
+		res.setError(ex.getMessage());
+		res.setMessage("Hang con lai khong du");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(res);
+	}
 
 }
