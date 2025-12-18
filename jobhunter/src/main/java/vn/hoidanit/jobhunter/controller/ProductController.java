@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import vn.hoidanit.jobhunter.domain.Products;
@@ -33,7 +34,16 @@ public class ProductController {
 		productService.createListProduct(product);
 		return ResponseEntity.ok("Tao thanh cong");
 	}
-
+	
+	@GetMapping("/product/search")
+	public List<Products> search(
+	        @RequestParam(required = false, name ="name") String name,
+	        @RequestParam(required = false, name ="minPrice") Double minPrice,
+	        @RequestParam(required = false, name ="maxPrice") Double maxPrice,
+	        @RequestParam(defaultValue = "asc", name ="sort") String sort
+	) {
+	    return productService.search(name, minPrice, maxPrice, sort);
+	}
 	@GetMapping("/product")
 	public ResponseEntity<List<Products>> findAllProductCategory() {
 		return ResponseEntity.ok(productService.findAllProduct());

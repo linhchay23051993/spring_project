@@ -2,12 +2,14 @@ package vn.hoidanit.jobhunter.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import vn.hoidanit.jobhunter.domain.ProductCategory;
 import vn.hoidanit.jobhunter.domain.Products;
 import vn.hoidanit.jobhunter.repository.ProductCategoryRepository;
 import vn.hoidanit.jobhunter.repository.ProductRepository;
+import vn.hoidanit.jobhunter.util.ProductSpecification;
 
 @Service
 public class ProductService {
@@ -33,7 +35,7 @@ public class ProductService {
 		productsDB.setDescription(products.getDescription());
 		return this.productRepository.save(productsDB);
 	}
-	
+
 	public void createListProduct(List<Products> list) {
 		this.productRepository.saveAll(list);
 	}
@@ -49,5 +51,12 @@ public class ProductService {
 	public String deleteProductById(long id) {
 		productRepository.deleteById(id);
 		return "Delete success";
+	}
+
+	@SuppressWarnings("null")
+	public List<Products> search(String name, Double min, Double max, String sortDir) {
+		Sort sort = sortDir.equalsIgnoreCase("desc") ? Sort.by("price").descending() : Sort.by("price").ascending();
+
+		return productRepository.findAll(ProductSpecification.filter(name, min, max), sort);
 	}
 }
