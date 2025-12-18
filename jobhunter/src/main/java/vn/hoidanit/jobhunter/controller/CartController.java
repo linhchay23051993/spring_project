@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import vn.hoidanit.jobhunter.domain.Cart;
-import vn.hoidanit.jobhunter.domain.CartRequestDTO;
+import vn.hoidanit.jobhunter.domain.request.CartRequestDTO;
 import vn.hoidanit.jobhunter.service.CartService;
 import vn.hoidanit.jobhunter.service.error.IdInvalidException;
 import vn.hoidanit.jobhunter.service.error.OverQuanlityException;

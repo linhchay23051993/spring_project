@@ -8,10 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import vn.hoidanit.jobhunter.domain.Cart;
 import vn.hoidanit.jobhunter.domain.CartItem;
-import vn.hoidanit.jobhunter.domain.CartItemDTO;
-import vn.hoidanit.jobhunter.domain.CartRequestDTO;
 import vn.hoidanit.jobhunter.domain.Products;
 import vn.hoidanit.jobhunter.domain.User;
+import vn.hoidanit.jobhunter.domain.request.CartItemDTO;
+import vn.hoidanit.jobhunter.domain.request.CartRequestDTO;
 import vn.hoidanit.jobhunter.repository.CartItemRepository;
 import vn.hoidanit.jobhunter.repository.CartRepository;
 import vn.hoidanit.jobhunter.repository.ProductRepository;

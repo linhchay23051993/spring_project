@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import vn.hoidanit.jobhunter.domain.Order;
-import vn.hoidanit.jobhunter.domain.OrderResquestDto;
+import vn.hoidanit.jobhunter.domain.request.OrderResquestDto;
 import vn.hoidanit.jobhunter.service.OrderService;
 
 @RestController
