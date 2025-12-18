@@ -2,6 +2,7 @@ package vn.hoidanit.jobhunter.controller;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,22 +29,24 @@ public class ProductController {
 	public ResponseEntity<Products> createProductCategory(@RequestBody Products product) {
 		return ResponseEntity.ok(productService.createProduct(product));
 	}
-	
+
 	@PostMapping("/product/list")
 	public ResponseEntity<String> createProductList(@RequestBody List<Products> product) {
 		productService.createListProduct(product);
 		return ResponseEntity.ok("Tao thanh cong");
 	}
-	
+
 	@GetMapping("/product/search")
-	public List<Products> search(
-	        @RequestParam(required = false, name ="name") String name,
-	        @RequestParam(required = false, name ="minPrice") Double minPrice,
-	        @RequestParam(required = false, name ="maxPrice") Double maxPrice,
-	        @RequestParam(defaultValue = "asc", name ="sort") String sort
-	) {
-	    return productService.search(name, minPrice, maxPrice, sort);
+	public ResponseEntity<Page<Products>> search(@RequestParam(required = false, name = "name") String name,
+			@RequestParam(required = false, name = "minPrice") Double minPrice,
+			@RequestParam(required = false, name = "maxPrice") Double maxPrice,
+			@RequestParam(defaultValue = "asc", name = "sort") String sort,
+			@RequestParam(defaultValue = "0", name = "page") int page,
+			@RequestParam(defaultValue = "10", name = "size") int size) {
+		Page<Products> result = productService.search(name, minPrice, maxPrice, sort, page, size);
+		return ResponseEntity.ok(result);
 	}
+
 	@GetMapping("/product")
 	public ResponseEntity<List<Products>> findAllProductCategory() {
 		return ResponseEntity.ok(productService.findAllProduct());

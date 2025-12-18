@@ -52,6 +52,7 @@ public class Products {
 	
 	@ManyToOne
 	@JoinColumn(name = "product_category_id")
+	@JsonIgnore
 	private ProductCategory productCategory;
 
 	@PrePersist

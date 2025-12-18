@@ -2,6 +2,9 @@ package vn.hoidanit.jobhunter.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
@@ -54,9 +57,16 @@ public class ProductService {
 	}
 
 	@SuppressWarnings("null")
-	public List<Products> search(String name, Double min, Double max, String sortDir) {
-		Sort sort = sortDir.equalsIgnoreCase("desc") ? Sort.by("price").descending() : Sort.by("price").ascending();
+	public Page<Products> search(String name, Double min, Double max, String sortDir, int page, int size) {
+		// Tạo Sort
+		Sort sort = sortDir != null && sortDir.equalsIgnoreCase("desc") 
+			? Sort.by("price").descending() 
+			: Sort.by("price").ascending();
 
-		return productRepository.findAll(ProductSpecification.filter(name, min, max), sort);
+		// Tạo Pageable với Sort
+		Pageable pageable = PageRequest.of(page, size, sort);
+
+		// Thực hiện query với phân trang
+		return productRepository.findAll(ProductSpecification.filter(name, min, max), pageable);
 	}
 }
