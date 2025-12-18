@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import vn.hoidanit.jobhunter.domain.Cart;
 import vn.hoidanit.jobhunter.domain.CartRequestDTO;
 import vn.hoidanit.jobhunter.service.CartService;
+import vn.hoidanit.jobhunter.service.error.IdInvalidException;
 import vn.hoidanit.jobhunter.service.error.OverQuanlityException;
 
 @RestController
@@ -46,7 +47,7 @@ public class CartController {
 	}
 	
 	@DeleteMapping("/cart-delete/{id}")
-	public ResponseEntity<String> deleteCart(@PathVariable ("id") long id) {
+	public ResponseEntity<String> deleteCart(@PathVariable ("id") long id) throws IdInvalidException {
 		cartService.deleteCart(id);
 		return ResponseEntity.ok("Da xoa gio hang");
 	}

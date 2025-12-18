@@ -16,6 +16,7 @@ import vn.hoidanit.jobhunter.repository.CartItemRepository;
 import vn.hoidanit.jobhunter.repository.CartRepository;
 import vn.hoidanit.jobhunter.repository.ProductRepository;
 import vn.hoidanit.jobhunter.repository.UserRepository;
+import vn.hoidanit.jobhunter.service.error.IdInvalidException;
 import vn.hoidanit.jobhunter.service.error.OverQuanlityException;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 
@@ -117,7 +118,26 @@ public class CartService {
 	}
 	
 	@Transactional
-	public void deleteCart(long cartId) {
+	public void deleteCart(long cartId) throws IdInvalidException {
+		// Lấy user hiện tại từ JWT
+		String email = SecurityUtil.getCurrentUserLogin().get();
+		User user = userRepository.findByEmail(email);
+		
+		// Tìm cart theo cartId
+		Cart cart = cartRepository.findById(cartId)
+			.orElse(null);
+		
+		// Kiểm tra cart có tồn tại không
+		if (cart == null) {
+			throw new IdInvalidException("Gio hang khong ton tai");
+		}
+		
+		// Kiểm tra ownership: cart phải thuộc về user hiện tại
+		if (cart.getUser() == null || cart.getUser().getId() != user.getId()) {
+			throw new IdInvalidException("Ban khong co quyen xoa gio hang nay");
+		}
+		
+		// Xóa cart nếu ownership hợp lệ
 		this.cartRepository.deleteById(cartId);
 	}
 	
