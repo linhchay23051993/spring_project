@@ -27,6 +27,12 @@ public class ProductController {
 	public ResponseEntity<Products> createProductCategory(@RequestBody Products product) {
 		return ResponseEntity.ok(productService.createProduct(product));
 	}
+	
+	@PostMapping("/product/list")
+	public ResponseEntity<String> createProductList(@RequestBody List<Products> product) {
+		productService.createListProduct(product);
+		return ResponseEntity.ok("Tao thanh cong");
+	}
 
 	@GetMapping("/product")
 	public ResponseEntity<List<Products>> findAllProductCategory() {

@@ -33,6 +33,10 @@ public class ProductService {
 		productsDB.setDescription(products.getDescription());
 		return this.productRepository.save(productsDB);
 	}
+	
+	public void createListProduct(List<Products> list) {
+		this.productRepository.saveAll(list);
+	}
 
 	public List<Products> findAllProduct() {
 		return productRepository.findAll();
