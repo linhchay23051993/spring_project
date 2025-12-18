@@ -24,6 +24,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
 import com.nimbusds.jose.util.Base64;
 
+import vn.hoidanit.jobhunter.service.error.CustomAccessDeniedHandler;
 import vn.hoidanit.jobhunter.service.error.CustomAuthenticationEntryPoint;
 import vn.hoidanit.jobhunter.util.SecurityUtil;
 
@@ -39,35 +40,34 @@ public class SecurityConfiguration {
 	}
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationEntryPoint cutoms) throws Exception {
-		http.csrf(c -> c.disable())
-		.cors(Customizer.withDefaults())
-				.authorizeHttpRequests(
-						authz -> authz.requestMatchers("/", "/auth/login","/auth/refresh","/auth/register").permitAll()
+	public SecurityFilterChain filterChain(HttpSecurity http, CustomAuthenticationEntryPoint cutoms,
+			CustomAccessDeniedHandler accessDenien) throws Exception {
+		http.csrf(c -> c.disable()).cors(Customizer.withDefaults())
+				.authorizeHttpRequests(authz -> authz
+						.requestMatchers("/", "/auth/login", "/auth/refresh", "/auth/register").permitAll()
 						// User Controller
-						.requestMatchers(HttpMethod.POST,"/users**").hasAuthority("ROLE_ADMIN")
-						.requestMatchers(HttpMethod.GET,"/users**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
-						.requestMatchers(HttpMethod.PUT,"/users**").hasAuthority("ROLE_ADMIN")
-						.requestMatchers(HttpMethod.DELETE,"/users**").hasAuthority("ROLE_ADMIN")
+						.requestMatchers(HttpMethod.POST, "/users**").hasAuthority("ROLE_ADMIN")
+						.requestMatchers(HttpMethod.GET, "/users**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+						.requestMatchers(HttpMethod.PUT, "/users**").hasAuthority("ROLE_ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/users**").hasAuthority("ROLE_ADMIN")
 						// Product Controller
-						.requestMatchers(HttpMethod.POST,"/product/**").hasAuthority("ROLE_ADMIN")
-						.requestMatchers(HttpMethod.PUT,"/product**").hasAuthority("ROLE_ADMIN")
-						.requestMatchers(HttpMethod.DELETE,"/product**").hasAuthority("ROLE_ADMIN")
+						.requestMatchers(HttpMethod.POST, "/product/**").hasAuthority("ROLE_ADMIN")
+						.requestMatchers(HttpMethod.PUT, "/product**").hasAuthority("ROLE_ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/product**").hasAuthority("ROLE_ADMIN")
 						// Cart Controller
-						.requestMatchers(HttpMethod.POST,"/cart**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
-						.requestMatchers(HttpMethod.GET,"/cart**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
-						.requestMatchers(HttpMethod.PUT,"/cart**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
-						.requestMatchers(HttpMethod.DELETE,"/cart**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+						.requestMatchers(HttpMethod.POST, "/cart**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+						.requestMatchers(HttpMethod.GET, "/cart**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+						.requestMatchers(HttpMethod.PUT, "/cart**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
+						.requestMatchers(HttpMethod.DELETE, "/cart**").hasAnyAuthority("ROLE_ADMIN", "ROLE_USER")
 						// Order controller
-						.requestMatchers(HttpMethod.POST,"/order**").hasAuthority("ROLE_ADMIN")
+						.requestMatchers(HttpMethod.POST, "/order**").hasAuthority("ROLE_ADMIN")
 //						.requestMatchers(HttpMethod.GET,"/users**").hasAuthority("ROLE_ADMIN")
 //						.requestMatchers(HttpMethod.PUT,"/users**").hasAuthority("ROLE_ADMIN")
 //						.requestMatchers(HttpMethod.DELETE,"/users**").hasAuthority("ROLE_ADMIN")
-						.anyRequest().authenticated()
-						)
+						.anyRequest().authenticated())
 				.oauth2ResourceServer(
 						(oauth2) -> oauth2.jwt(Customizer.withDefaults()).authenticationEntryPoint(cutoms))
-				.formLogin(f -> f.disable())
+				.exceptionHandling(ex -> ex.accessDeniedHandler(accessDenien)).formLogin(f -> f.disable())
 //				.exceptionHandling(
 //						exceptions -> exceptions.authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint()) // 401
 //								.accessDeniedHandler(new BearerTokenAccessDeniedHandler())) // 403
