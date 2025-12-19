@@ -1,5 +1,6 @@
 package vn.hoidanit.jobhunter.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.domain.Page;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import vn.hoidanit.jobhunter.domain.ProductCategory;
 import vn.hoidanit.jobhunter.domain.Products;
+import vn.hoidanit.jobhunter.domain.dto.ProductListDto;
+import vn.hoidanit.jobhunter.domain.dto.ProductResponseDto;
 import vn.hoidanit.jobhunter.repository.ProductCategoryRepository;
 import vn.hoidanit.jobhunter.repository.ProductRepository;
 import vn.hoidanit.jobhunter.util.ProductSpecification;
@@ -43,8 +46,9 @@ public class ProductService {
 		this.productRepository.saveAll(list);
 	}
 
-	public List<Products> findAllProduct() {
-		return productRepository.findAll();
+	public List<ProductListDto> findAllProduct() {
+		convertToProductListDto(productRepository.findAll());
+		return convertToProductListDto(productRepository.findAll());
 	}
 
 	public Products findProductById(long id) {
@@ -56,17 +60,51 @@ public class ProductService {
 		return "Delete success";
 	}
 
-	@SuppressWarnings("null")
-	public Page<Products> search(String name, Double min, Double max, String sortDir, int page, int size) {
+	public ProductResponseDto search(String name, Double min, Double max, String sortDir, int page, int size) {
 		// Tạo Sort
-		Sort sort = sortDir != null && sortDir.equalsIgnoreCase("desc") 
-			? Sort.by("price").descending() 
-			: Sort.by("price").ascending();
+		Sort sort = sortDir != null && sortDir.equalsIgnoreCase("desc") ? Sort.by("price").descending()
+				: Sort.by("price").ascending();
 
-		// Tạo Pageable với Sort
 		Pageable pageable = PageRequest.of(page, size, sort);
+		Page<Products> productList = productRepository.findAll(ProductSpecification.filter(name, min, max), pageable);
+		ProductResponseDto productResponseDto = new ProductResponseDto();
+		productResponseDto.setTotal((int) productList.getTotalElements());
+		convertToProductListDto(productList.getContent());
+		productResponseDto.setListDto(convertToProductListDto(productList.getContent()));
+		return productResponseDto;
+	}
 
-		// Thực hiện query với phân trang
-		return productRepository.findAll(ProductSpecification.filter(name, min, max), pageable);
+	public ProductResponseDto initProduct() {
+
+		List<Products> productList = productRepository.findAll();
+		ProductResponseDto productResponseDto = new ProductResponseDto();
+		productResponseDto.setTotal(productList.size());
+		productResponseDto.setListDto(convertToProductListDto(productList));
+		return productResponseDto;
+	}
+	
+//	public ProductResponseDto initProduct(int page, int size) {
+//
+//		Pageable pageable = PageRequest.of(page, size);
+//		Page<Products> productList = productRepository.findAll(pageable);
+//		ProductResponseDto productResponseDto = new ProductResponseDto();
+//		productResponseDto.setTotal((int) productList.getTotalElements());
+//		convertToProductListDto(productList.getContent());
+//		productResponseDto.setListDto(convertToProductListDto(productList.getContent()));
+//		return productResponseDto;
+//	}
+
+	public List<ProductListDto> convertToProductListDto(List<Products> list) {
+		List<ProductListDto> listDto = new ArrayList<>();
+		for (Products item : list) {
+			ProductListDto dto = new ProductListDto();
+			dto.setId(item.getId());
+			dto.setName(item.getName());
+			dto.setPrice(item.getPrice());
+			dto.setDescription(item.getDescription());
+			listDto.add(dto);
+		}
+
+		return listDto;
 	}
 }
