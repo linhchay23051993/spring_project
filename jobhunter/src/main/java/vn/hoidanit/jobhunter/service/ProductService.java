@@ -74,25 +74,25 @@ public class ProductService {
 		return productResponseDto;
 	}
 
-	public ProductResponseDto initProduct() {
-
-		List<Products> productList = productRepository.findAll();
-		ProductResponseDto productResponseDto = new ProductResponseDto();
-		productResponseDto.setTotal(productList.size());
-		productResponseDto.setListDto(convertToProductListDto(productList));
-		return productResponseDto;
-	}
-	
-//	public ProductResponseDto initProduct(int page, int size) {
+//	public ProductResponseDto initProduct() {
 //
-//		Pageable pageable = PageRequest.of(page, size);
-//		Page<Products> productList = productRepository.findAll(pageable);
+//		List<Products> productList = productRepository.findAll();
 //		ProductResponseDto productResponseDto = new ProductResponseDto();
-//		productResponseDto.setTotal((int) productList.getTotalElements());
-//		convertToProductListDto(productList.getContent());
-//		productResponseDto.setListDto(convertToProductListDto(productList.getContent()));
+//		productResponseDto.setTotal(productList.size());
+//		productResponseDto.setListDto(convertToProductListDto(productList));
 //		return productResponseDto;
 //	}
+	
+	public ProductResponseDto initProduct(int page, int size) {
+
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Products> productList = productRepository.findAll(pageable);
+		ProductResponseDto productResponseDto = new ProductResponseDto();
+		productResponseDto.setTotal((int) productList.getTotalElements());
+		convertToProductListDto(productList.getContent());
+		productResponseDto.setListDto(convertToProductListDto(productList.getContent()));
+		return productResponseDto;
+	}
 
 	public List<ProductListDto> convertToProductListDto(List<Products> list) {
 		List<ProductListDto> listDto = new ArrayList<>();

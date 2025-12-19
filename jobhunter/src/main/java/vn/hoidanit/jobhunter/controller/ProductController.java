@@ -48,8 +48,10 @@ public class ProductController {
 	}
 
 	@GetMapping("/product")
-	public ResponseEntity<ProductResponseDto> initProduct() {
-		ProductResponseDto result = productService.initProduct();
+	public ResponseEntity<ProductResponseDto> initProduct(
+			@RequestParam(defaultValue = "0", name = "page") int page,
+			@RequestParam(defaultValue = "4", name = "size") int size) {
+		ProductResponseDto result = productService.initProduct(page, size);
 		return ResponseEntity.ok(result);
 	}
 
